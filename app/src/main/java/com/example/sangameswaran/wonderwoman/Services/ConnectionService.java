@@ -73,7 +73,7 @@ public class ConnectionService extends Service implements LocationListener{
                     Log.d("Tag","Socket Created without Error");
                     mSocket.connect();
                     Log.d("Tag","Connected to server");
-                    Toast.makeText(this,"ALL FINE",Toast.LENGTH_LONG).show();
+                    CommonFunctions.toastString("Connected to gear",this);
                     final Handler keepGettingIps=new Handler();
                     keepGettingIps.postDelayed(new Runnable() {
                         @Override

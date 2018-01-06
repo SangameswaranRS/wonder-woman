@@ -119,7 +119,7 @@ public class BtConnectionActivity extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress();
-                Toast.makeText(getApplicationContext(), "Discovered" + deviceName, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Discovered" + deviceName, Toast.LENGTH_LONG).show();
                 mDiscoveredDevices.add(device);
                 avAdapter = new BluetoothDeviceAdapter(mBluetoothAdapter, mDiscoveredDevices, BtConnectionActivity.this);
                 availableDevices.setAdapter(avAdapter);
@@ -131,7 +131,6 @@ public class BtConnectionActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mReceiver);
     }
 
     protected void checkLocationPermission() {

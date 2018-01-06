@@ -14,6 +14,7 @@ import com.example.sangameswaran.wonderwoman.Constants.Constants;
 import com.example.sangameswaran.wonderwoman.Entities.AbsoluteUserEntity;
 import com.example.sangameswaran.wonderwoman.Entities.ErrorEntity;
 import com.example.sangameswaran.wonderwoman.Entities.GetCrimeApiEntity;
+import com.example.sangameswaran.wonderwoman.Entities.GetCrimesApiEntity;
 import com.example.sangameswaran.wonderwoman.Entities.LocationEntity;
 import com.example.sangameswaran.wonderwoman.Entities.PostCrimeEntity;
 import com.example.sangameswaran.wonderwoman.Entities.UserEntity;
@@ -169,5 +170,24 @@ public class RestClientImplementation {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void getAllCrimeApi(final GetCrimesApiEntity entity, final GetCrimesApiEntity.WonderWomanRestClientInterface restClientInterface, final Context context){
+        queue=VolleySingleton.getInstance(context).getRequestQueue();
+        String API_URL=getAbsoluteURL("/getAllCrimeInfo");
+        final Gson gs=new Gson();
+        JsonBaseRequest getRequest=new JsonBaseRequest(Request.Method.GET, API_URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                GetCrimesApiEntity entity1=gs.fromJson(response.toString(),GetCrimesApiEntity.class);
+                restClientInterface.onGetAllInfo(entity1,null);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                CommonFunctions.toastString("Something went wrong !!",context);
+            }
+        });
+        queue.add(getRequest);
     }
 }
