@@ -13,6 +13,9 @@ import com.example.sangameswaran.wonderwoman.Constants.CommonFunctions;
 import com.example.sangameswaran.wonderwoman.Constants.Constants;
 import com.example.sangameswaran.wonderwoman.Entities.AbsoluteUserEntity;
 import com.example.sangameswaran.wonderwoman.Entities.ErrorEntity;
+import com.example.sangameswaran.wonderwoman.Entities.GetCrimeApiEntity;
+import com.example.sangameswaran.wonderwoman.Entities.LocationEntity;
+import com.example.sangameswaran.wonderwoman.Entities.PostCrimeEntity;
 import com.example.sangameswaran.wonderwoman.Entities.UserEntity;
 import com.google.gson.Gson;
 
@@ -101,5 +104,70 @@ public class RestClientImplementation {
             }
         });
         queue.add(getRequest);
+    }
+
+    public static void postCrimeApi(final LocationEntity locationEntity, final LocationEntity.WonderWomanRestClientInterface restClientInterface, final Context context){
+        queue=VolleySingleton.getInstance(context).getRequestQueue();
+        String API_URL=getAbsoluteURL("/updateCrime");
+        final Gson gson=new Gson();
+        String jsonString=gson.toJson(locationEntity);
+        try {
+            JSONObject postParams=new JSONObject(jsonString);
+            JsonBaseRequest baseRequest=new JsonBaseRequest(Request.Method.POST, API_URL, postParams, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        String message = response.getString("message");
+                        String crimeId=response.getString("crimeId");
+                        CommonFunctions.toastString(message,context);
+                        SharedPreferences sp=context.getSharedPreferences("crimeId",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor=sp.edit();
+                        editor.putString("crimeId",crimeId);
+                        editor.commit();
+                        restClientInterface.onSubmitCoordinates(locationEntity,null);
+                    } catch (JSONException e) {
+                        CommonFunctions.toastString(e.getMessage(),context);
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    CommonFunctions.toastString("Something went wrong!!",context);
+                }
+            });
+            queue.add(baseRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getPredictionApi(PostCrimeEntity entity, final PostCrimeEntity.WonderWomanRestClientInterface restClientInterface, final Context context)  {
+        queue=VolleySingleton.getInstance(context).getRequestQueue();
+        String API_URL=getAbsoluteURL("/getPredictionForCrimeId");
+        final Gson gs=new Gson();
+        String jsonString=gs.toJson(entity);
+        try {
+            JSONObject postParam=new JSONObject(jsonString);
+            JsonBaseRequest postRequest=new JsonBaseRequest(Request.Method.POST, API_URL, postParam, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        GetCrimeApiEntity entity1 = gs.fromJson(response.toString(), GetCrimeApiEntity.class);
+                        restClientInterface.onInfoSubmit(entity1,null);
+                    }catch (Exception e){
+                        CommonFunctions.toastString("Cast Error",context);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    CommonFunctions.toastString("Something went wrong!",context);
+                }
+            });
+            queue.add(postRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
