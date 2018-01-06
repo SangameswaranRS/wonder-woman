@@ -15,8 +15,10 @@ import com.example.sangameswaran.wonderwoman.Entities.AbsoluteUserEntity;
 import com.example.sangameswaran.wonderwoman.Entities.ErrorEntity;
 import com.example.sangameswaran.wonderwoman.Entities.GetCrimeApiEntity;
 import com.example.sangameswaran.wonderwoman.Entities.GetCrimesApiEntity;
+import com.example.sangameswaran.wonderwoman.Entities.GetUserProfileApiEntity;
 import com.example.sangameswaran.wonderwoman.Entities.LocationEntity;
 import com.example.sangameswaran.wonderwoman.Entities.PostCrimeEntity;
+import com.example.sangameswaran.wonderwoman.Entities.PostUserIdEntity;
 import com.example.sangameswaran.wonderwoman.Entities.UserEntity;
 import com.google.gson.Gson;
 
@@ -29,9 +31,11 @@ import org.json.JSONObject;
 
 public class RestClientImplementation {
     static RequestQueue queue;
+
     public static String getAbsoluteURL(String relativeURL){
         return Constants.BASE_URL+relativeURL;
     }
+
     public static void createUserApi(UserEntity entity, final UserEntity.WonderWomanRestClientInterface restClientInterface, final Context context){
         queue= VolleySingleton.getInstance(context).getRequestQueue();
         String API_URL=getAbsoluteURL("/createUser");
@@ -189,5 +193,30 @@ public class RestClientImplementation {
             }
         });
         queue.add(getRequest);
+    }
+
+    public static void getUserProfile(final PostUserIdEntity entity,final PostUserIdEntity.WonderWomanRestClientInterface restClientInterface,final Context context){
+        queue=VolleySingleton.getInstance(context).getRequestQueue();
+        String API_URL=getAbsoluteURL("/getUserInfo");
+        final Gson gs=new Gson();
+        String jsonString=gs.toJson(entity);
+        try {
+            JSONObject postParams=new JSONObject(jsonString);
+            JsonBaseRequest postRequest=new JsonBaseRequest(Request.Method.POST, API_URL, postParams, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    GetUserProfileApiEntity entity1=gs.fromJson(response.toString(),GetUserProfileApiEntity.class);
+                    restClientInterface.getInfo(entity1,null);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    CommonFunctions.toastString("Something went wrong!!",context);
+                }
+            });
+            queue.add(postRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

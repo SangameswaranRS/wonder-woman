@@ -14,7 +14,7 @@
         android:layout_above="@+id/navigation">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
             android:background="@color/colorPrimary"
             android:id="@+id/headerP">
             <TextView
@@ -23,10 +23,15 @@
                 android:text="Wonder Woman"
                 android:drawableLeft="@drawable/women_icon"
                 android:textColor="#ffff"
-                android:textSize="18dp"
+                android:textSize="23dp"
                 android:textStyle="bold"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mapContainerRl"
+            android:layout_below="@+id/headerP">
         <fragment
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -34,9 +39,17 @@
             android:layout_height="match_parent"
             android:id="@+id/map"
             map:uiZoomControls="true"
-            android:layout_below="@+id/headerP"
             tools:context=".MapsActivity"
             android:name="com.google.android.gms.maps.SupportMapFragment" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/headerP"
+            android:id="@+id/fragmentContainer"
+            android:visibility="gone">
+
+        </RelativeLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
@@ -45,6 +58,14 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:id="@+id/fab"/>
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/zoom_out_icon"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/relativeZoomFab"/>
+
 
     </RelativeLayout>
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_ww">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+        <TextView
+            android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:padding="5dp"
+            android:text="Wonder Woman"
+            android:textColor="#fff"
+            android:textSize="21dp"
+            android:id="@+id/tvUserName"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#fff"
+            android:textSize="14dp"
+            android:id="@+id/tvUserEmailId"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:padding="5dp"
+            android:textColor="#fff"
+            android:id="@+id/tvec1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="14dp"
+            android:textColor="#fff"
+            android:id="@+id/tvec2"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#fff"
+            android:textSize="14dp"
+            android:id="@+id/tvAge"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#fff"
+            android:textSize="14dp"
+            android:id="@+id/tvUserId"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvAddress"
+            android:padding="5dp"
+            android:textColor="#fff"
+            android:textSize="14dp"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

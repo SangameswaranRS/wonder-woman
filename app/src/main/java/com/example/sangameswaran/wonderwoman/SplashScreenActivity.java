@@ -60,7 +60,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
                 if(report.areAllPermissionsGranted()){
-                    Toast.makeText(getApplicationContext(),"All Permissions Granted",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"All Permissions Granted",Toast.LENGTH_LONG).show();
                 }
                 else {
                     permissionChecker=new AlertDialog.Builder(SplashScreenActivity.this);
