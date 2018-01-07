@@ -1,5 +1,7 @@
 package com.example.sangameswaran.wonderwoman.RestCalls;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import com.example.sangameswaran.wonderwoman.Entities.LocationEntity;
 import com.example.sangameswaran.wonderwoman.Entities.PostCrimeEntity;
 import com.example.sangameswaran.wonderwoman.Entities.PostUserIdEntity;
 import com.example.sangameswaran.wonderwoman.Entities.UserEntity;
+import com.example.sangameswaran.wonderwoman.R;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -212,6 +215,40 @@ public class RestClientImplementation {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     CommonFunctions.toastString("Something went wrong!!",context);
+                }
+            });
+            queue.add(postRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void obtainLocationQuery(final LocationEntity locationEntity,final LocationEntity.WonderWomanRestClientInterface restClientInterface,final Context context){
+        queue=VolleySingleton.getInstance(context).getRequestQueue();
+        String API_URL=getAbsoluteURL("/queryLocation");
+        final Gson gs=new Gson();
+        String jsonString=gs.toJson(locationEntity);
+        try {
+            JSONObject postParam=new JSONObject(jsonString);
+            JsonBaseRequest postRequest=new JsonBaseRequest(Request.Method.POST, API_URL, postParam, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        String prediction=response.getString("prediction");
+                        CommonFunctions.toastString(prediction,context);
+                        LocationEntity l=new LocationEntity();
+                        NotificationManager NM=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                        Notification notification=new Notification.Builder(context).setSmallIcon(R.drawable.women_icon).setContentTitle("Zone Alert").setContentText(prediction).build();
+                        NM.notify(0,notification);
+                        restClientInterface.onSubmitCoordinates(l,null);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
                 }
             });
             queue.add(postRequest);

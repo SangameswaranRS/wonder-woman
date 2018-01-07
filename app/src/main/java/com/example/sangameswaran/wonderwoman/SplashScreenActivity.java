@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.sangameswaran.wonderwoman.Entities.ErrorEntity;
 import com.example.sangameswaran.wonderwoman.RestCalls.RestClientImplementation;
+import com.example.sangameswaran.wonderwoman.Services.LocatorService;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -35,6 +36,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         askRequiredPermissionsForApplication();
+        startLocatorService();
         RestClientImplementation.getCopNumberApi(new ErrorEntity(), new ErrorEntity.WonderWomanRestClientInterface() {
             @Override
             public void onGetCopDetail(ErrorEntity errorEntity, VolleyError error) {
@@ -84,6 +86,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }).onSameThread().check();
         return true;
+    }
+
+    public void startLocatorService(){
+        Intent intent=new Intent(this, LocatorService.class);
+        startService(intent);
     }
 
 }

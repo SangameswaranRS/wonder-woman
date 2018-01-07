@@ -41,6 +41,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <service android:name="com.example.sangameswaran.wonderwoman.Services.ConnectionService"></service>
+        <service android:name="com.example.sangameswaran.wonderwoman.Services.LocatorService"></service>
     </application>
 
 </manifest>
